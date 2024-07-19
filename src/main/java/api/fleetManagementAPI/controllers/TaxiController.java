@@ -5,6 +5,7 @@ import api.fleetManagementAPI.services.ListTaxiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class TaxiController {
     private ListTaxiService listTaxiService;
 
     @GetMapping()
-    public List<Taxi> getTaxi() {
-        return listTaxiService.runList(); //llamo al service y ejecuto su método
+    public List<Taxi> getTaxi(@RequestParam Integer page, @RequestParam Integer limit) {
+        return listTaxiService.runList(page, limit); //llamo al service y ejecuto su método
     }
 }
