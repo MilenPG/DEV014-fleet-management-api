@@ -14,7 +14,6 @@ public class Taxi {
     public Integer getId() {
         return id;
     }
-
     public String getPlate() {
         return plate;
     }
@@ -23,7 +22,6 @@ public class Taxi {
     public void setPlate(String plate) {
         this.plate = plate;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }

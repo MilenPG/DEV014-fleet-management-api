@@ -12,9 +12,12 @@ public class ListTaxiService {
     @Autowired
     private TaxiRepository taxiRepository;
 
-    public List<Taxi> runList(Integer pageNumber, Integer pageSize) {
+    public List<Taxi> runList(String plate, Integer pageNumber, Integer pageSize) {
+        //Sort plate = Sort.by(queryParam);
         Pageable page = PageRequest.of(pageNumber, pageSize);
-        return taxiRepository.findAll(page).getContent();
+
+        System.out.println(plate);
+        return taxiRepository.findByPlateContains(plate, page).getContent();
     }
 
 }
