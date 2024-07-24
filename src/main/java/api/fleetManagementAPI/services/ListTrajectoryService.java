@@ -14,9 +14,9 @@ public class ListTrajectoryService {
     @Autowired
     private TrajectoryRepository trajectoryRepository;
 
-    public List<Trajectory> runList(Integer taxiId, Integer pageNumber, Integer pageLimit) {
+    public List<Trajectory> runList(Integer taxiId, String date, Integer pageNumber, Integer pageLimit) {
         Pageable page = PageRequest.of(pageNumber, pageLimit);
 
-        return trajectoryRepository.findByTaxiIdAndDate(taxiId, page).getContent();
+        return trajectoryRepository.findByTaxiIdAndDate(taxiId, date, page).getContent();
     }
 }

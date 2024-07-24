@@ -21,10 +21,11 @@ public class TrajectoryController {
 
     @GetMapping()
     public List<Trajectory> getTrajectory(@RequestParam Integer taxiId,
+                                          @RequestParam String date,
                                           @RequestParam(defaultValue="0") Integer page,
                                           @RequestParam(defaultValue="10") Integer limit)
     {
         return listTrajectoryService
-                .runList(taxiId, page, limit);
+                .runList(taxiId, date, page, limit);
     }
 }
