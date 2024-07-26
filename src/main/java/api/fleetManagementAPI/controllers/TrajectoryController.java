@@ -4,6 +4,7 @@ package api.fleetManagementAPI.controllers;
 //AQUÍ DESARROLLAREMOS LOS 2 ENDPOINTS REQUERIDOS
 
 import api.fleetManagementAPI.models.Trajectory;
+import api.fleetManagementAPI.services.ListLatestTrajectoriesService;
 import api.fleetManagementAPI.services.ListTrajectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/trajectories")
 public class TrajectoryController {
-    @Autowired
+    @Autowired // aquí debemos instanciar todos los servicios a los q debemos conectar para ejecutar las peticiones a construir.
     private ListTrajectoryService listTrajectoryService;
+    private ListLatestTrajectoriesService listLatestTrajectoriesService;
 
     @GetMapping()
     public List<Trajectory> getTrajectory(@RequestParam Integer taxiId,
@@ -27,5 +29,13 @@ public class TrajectoryController {
     {
         return listTrajectoryService
                 .runList(taxiId, date, page, limit);
+    }
+
+    @GetMapping("/latest")
+    public List<Trajectory> getLatestTrajectories(@RequestParam(required = false, defaultValue="0") Integer page,
+                                      @RequestParam(required = false, defaultValue="10") Integer limit)
+    {
+        return listLatestTrajectoriesService
+                .runList(page, limit);
     }
 }

@@ -15,7 +15,7 @@ public class Trajectory {
     private Date date;
     @JoinColumn(name="taxi_id")
     @ManyToOne
-    private Taxi taxi; // la relación de este attr con trajectories es many to one, muchas trayectorias pueden asociarse a un solo taxi
+    private Taxi taxi; // la relación de este attr con trajectories es "many to one", muchas trayectorias pueden asociarse a un solo taxi
 
     public Integer getId() {
         return id;

@@ -6,10 +6,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface TrajectoryRepository extends JpaRepository<Trajectory, Integer> {
     @Query(nativeQuery = true,
             value = "select * from trajectories where taxi_id=:taxi_id and TO_CHAR(date,'dd-MM-yyyy')=:date")
+
     Page<Trajectory> findByTaxiIdAndDate(Integer taxi_id, String date, Pageable page);
+
+
+    Page<Trajectory> findByLatestTrajectories(Pageable page);
 
     //las fechas están guardadas como timeStamp, que incluye hasta la hora, pero el endpoint solo nos pide fecha (convertir timeStamp a String para comparar)
     /*- El método a crear en TrajectoryRepository, debe convertir el tipo de dato timeStamp a String
