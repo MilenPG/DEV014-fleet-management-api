@@ -18,6 +18,6 @@ public class ListLatestTrajectoriesService {
         Pageable page = PageRequest.of(pageNumber, pageLimit);
 
         System.out.println("The latest trajectories request has been done");
-        return trajectoryRepository.findByLatestTrajectories(page).getContent();
+        return trajectoryRepository.findByLatestTrajectories(page);
     }
 }

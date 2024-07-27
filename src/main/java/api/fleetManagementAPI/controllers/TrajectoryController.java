@@ -19,6 +19,7 @@ import java.util.List;
 public class TrajectoryController {
     @Autowired // aquí debemos instanciar todos los servicios a los q debemos conectar para ejecutar las peticiones a construir.
     private ListTrajectoryService listTrajectoryService;
+    @Autowired
     private ListLatestTrajectoriesService listLatestTrajectoriesService;
 
     @GetMapping()

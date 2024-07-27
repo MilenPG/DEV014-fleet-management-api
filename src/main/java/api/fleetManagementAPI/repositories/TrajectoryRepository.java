@@ -9,13 +9,21 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface TrajectoryRepository extends JpaRepository<Trajectory, Integer> {
+
     @Query(nativeQuery = true,
             value = "select * from trajectories where taxi_id=:taxi_id and TO_CHAR(date,'dd-MM-yyyy')=:date")
-
     Page<Trajectory> findByTaxiIdAndDate(Integer taxi_id, String date, Pageable page);
 
+    @Query(nativeQuery = true,
+            value = "SELECT ID, TAXI_ID, date, LONGITUDE, LATITUDE " +
 
-    Page<Trajectory> findByLatestTrajectories(Pageable page);
+                    "FROM (" + "SELECT ID, TAXI_ID, date, LONGITUDE, LATITUDE, " +
+                    "ROW_NUMBER() OVER (PARTITION BY TAXI_ID ORDER BY date DESC) as row_num " + // partition by ~ group by
+                    "FROM public.TRAJECTORIES) " +
+
+                    "AS ranked " +
+                    "WHERE row_num = 1") // producto de la partición ordenada descendentemente, la columna 1 sería el grupo requerido
+    List<Trajectory> findByLatestTrajectories(Pageable page);
 
     //las fechas están guardadas como timeStamp, que incluye hasta la hora, pero el endpoint solo nos pide fecha (convertir timeStamp a String para comparar)
     /*- El método a crear en TrajectoryRepository, debe convertir el tipo de dato timeStamp a String
