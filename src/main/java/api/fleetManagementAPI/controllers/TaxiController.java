@@ -25,6 +25,6 @@ public class TaxiController {
                               @RequestParam(defaultValue = "10") Integer limit)
                                {
         return listTaxiService
-                .runList(plate, page, limit); //llamo al service y ejecuto su método
+                .runList(plate, page, limit);
     }
 }
