@@ -3,10 +3,12 @@ package api.fleetManagementAPI.controllers;
 
 //AQUÍ DESARROLLAREMOS LOS 2 ENDPOINTS REQUERIDOS
 
+import api.fleetManagementAPI.services.MailService;
 import api.fleetManagementAPI.models.Trajectory;
 import api.fleetManagementAPI.services.ListLatestTrajectoriesService;
 import api.fleetManagementAPI.services.ListTrajectoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +23,8 @@ public class TrajectoryController {
     private ListTrajectoryService listTrajectoryService;
     @Autowired
     private ListLatestTrajectoriesService listLatestTrajectoriesService;
+    @Autowired
+    private MailService mailService;
 
     @GetMapping()
     public List<Trajectory> getTrajectory(@RequestParam Integer taxiId,
@@ -34,9 +38,15 @@ public class TrajectoryController {
 
     @GetMapping("/latest")
     public List<Trajectory> getLatestTrajectories(@RequestParam(required = false, defaultValue="0") Integer page,
-                                      @RequestParam(required = false, defaultValue="10") Integer limit)
+                                                  @RequestParam(required = false, defaultValue="10") Integer limit)
     {
         return listLatestTrajectoriesService
                 .runList(page, limit);
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<Object> mailService(@RequestParam String email)
+    {
+        return mailService.sendMessageTo(email, "Prueba mail FMA", "Hola, esto es un mail de prueba enviado automáticamente al hacer una petición a FMA");
     }
 }
