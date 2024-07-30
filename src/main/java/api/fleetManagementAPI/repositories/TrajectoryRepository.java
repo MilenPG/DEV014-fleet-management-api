@@ -12,7 +12,7 @@ public interface TrajectoryRepository extends JpaRepository<Trajectory, Integer>
 
     @Query(nativeQuery = true,
             value = "select * from trajectories where taxi_id=:taxi_id and TO_CHAR(date,'dd-MM-yyyy')=:date")
-    Page<Trajectory> findByTaxiIdAndDate(Integer taxi_id, String date, Pageable page);
+    List<Trajectory> findByTaxiIdAndDate(Integer taxi_id, String date, Pageable page);
 
     @Query(nativeQuery = true,
             value = "SELECT ID, TAXI_ID, date, LONGITUDE, LATITUDE " +

@@ -1,4 +1,4 @@
-package api.fleetManagementAPI.config;
+package api.fleetManagementAPI.components;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+
+import java.io.ByteArrayInputStream;
 
 @Component
 public class MailManager {  //implements EmailService {
@@ -18,7 +20,7 @@ public class MailManager {  //implements EmailService {
 
     public void sendMessage(String to,
                             String subject,
-                            String contentMessage) {
+                            String contentMessage, ByteArrayInputStream excelFile) {
         MimeMessage message = javaMailSender.createMimeMessage();
 
         try {
@@ -27,11 +29,6 @@ public class MailManager {  //implements EmailService {
             helper.setTo(to);
             helper.setText(contentMessage);
             helper.setFrom(sender);
-
-            /* EJEMPLO Q APARECE EN LA DOCUMENTACIÓN PARA ADJUNTAR UN RECIBO. EN ESTE CASO, HABRÍA Q MODIFICARLO PARA ADJUNTAR EXCEL???
-            FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
-            helper.addAttachment("Invoice", file);
-            */
 
             javaMailSender.send(message);
         }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -45,8 +46,16 @@ public class TrajectoryController {
     }
 
     @GetMapping("/export")
-    public ResponseEntity<Object> mailService(@RequestParam String email)
-    {
-        return mailService.sendMessageTo(email, "Prueba mail FMA", "Hola, esto es un mail de prueba enviado automáticamente al hacer una petición a FMA");
+    public ResponseEntity<Object> mailService(@RequestParam Integer taxiId,
+                                              @RequestParam String date,
+                                              @RequestParam String email,
+                                              @RequestParam(required = false, defaultValue="0") Integer page,
+                                              @RequestParam(required = false, defaultValue="10") Integer limit) throws IOException {
+        ResponseEntity<Object> exportTrajectories =
+                mailService.sendMessageTo(email,
+                        "Prueba mail FMA",
+                        "Hola, esto es un mail de prueba enviado automáticamente al hacer una petición a FMA",
+                        taxiId, date, page, limit);
+        return exportTrajectories;
     }
 }
