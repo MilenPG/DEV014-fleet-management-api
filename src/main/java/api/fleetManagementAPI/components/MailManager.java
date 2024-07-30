@@ -2,6 +2,7 @@ package api.fleetManagementAPI.components;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.util.ByteArrayDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,6 +10,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
 
 @Component
 public class MailManager {  //implements EmailService {
@@ -29,6 +32,7 @@ public class MailManager {  //implements EmailService {
             helper.setTo(to);
             helper.setText(contentMessage);
             helper.setFrom(sender);
+           // helper.addAttachment("Trajectories.xlsx", attachment);
 
             javaMailSender.send(message);
         }

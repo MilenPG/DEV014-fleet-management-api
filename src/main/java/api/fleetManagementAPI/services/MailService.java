@@ -39,53 +39,57 @@ public class MailService {
         return ResponseEntity.ok().body("Respuesta exitosa");
     }
 
-    public ByteArrayInputStream createExcel(Integer taxiId, String date, Integer pageNumber, Integer pageLimit)
-            throws IOException {
-                Workbook workbook = new XSSFWorkbook();
+    public ByteArrayInputStream createExcel(Integer taxiId, String date, Integer pageNumber, Integer pageLimit) throws IOException {
 
-                Sheet sheet = workbook.createSheet("Trajectories");
-                Row header = sheet.createRow(0);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Workbook workbook = new XSSFWorkbook();
 
-                header.createCell(0).setCellValue("Taxi ID");
-                header.createCell(1).setCellValue("Plate");
-                header.createCell(2).setCellValue("Latitude");
-                header.createCell(3).setCellValue("Longitude");
-                header.createCell(4).setCellValue("Date and Time");
+        Sheet sheet = workbook.createSheet("Trajectories");
+        Row header = sheet.createRow(0);
 
-                //Inyección de la data:
-                Pageable page = PageRequest.of(pageNumber, pageLimit);
-                List<Trajectory> trajectoriesData = trajectoryRepository.findByTaxiIdAndDate(taxiId, date, page);
+        header.createCell(0).setCellValue("Taxi ID");
+        header.createCell(1).setCellValue("Plate");
+        header.createCell(2).setCellValue("Latitude");
+        header.createCell(3).setCellValue("Longitude");
+        header.createCell(4).setCellValue("Date and Time");
 
-                int dataRowIndex = 1;
-                    for(Trajectory trajectory : trajectoriesData) {
-                        Row dataRow = sheet.createRow(dataRowIndex);
-                        dataRow.createCell(0).setCellValue(String.valueOf(trajectory.getTaxi().getId()));
-                        dataRow.createCell(1).setCellValue(String.valueOf(trajectory.getTaxi().getPlate()));
-                        dataRow.createCell(2).setCellValue(trajectory.getLatitude());
-                        dataRow.createCell(3).setCellValue(trajectory.getLongitude());
-                        dataRow.createCell(4).setCellValue(trajectory.getDate());
-                        dataRowIndex++;
-                    }
+        //Inyección de la data:
+        Pageable page = PageRequest.of(pageNumber, pageLimit);
+        List<Trajectory> trajectoriesData = trajectoryRepository.findByTaxiIdAndDate(taxiId, date, page);
 
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                workbook.write(outputStream);
-                workbook.close();
+        int dataRowIndex = 1;
+            for(Trajectory trajectory : trajectoriesData) {
+                Row dataRow = sheet.createRow(dataRowIndex);
+                dataRow.createCell(0).setCellValue(String.valueOf(trajectory.getTaxi().getId()));
+                dataRow.createCell(1).setCellValue(String.valueOf(trajectory.getTaxi().getPlate()));
+                dataRow.createCell(2).setCellValue(trajectory.getLatitude());
+                dataRow.createCell(3).setCellValue(trajectory.getLongitude());
+                dataRow.createCell(4).setCellValue(trajectory.getDate());
+                dataRowIndex++;
+            }
+        workbook.write(outputStream);
+        workbook.close();
 
-                /*
-                *DOC BAELDUNG - ME PIDE MANEJAR LAS EXCEPCIONES.
-                File currDir = new File(".");
-                String path = currDir.getAbsolutePath();
-                String fileLocation = path.substring(0, path.length() - 1) + "trajectories.xlsx";
+        /*
+        *DOC BAELDUNG - ME PIDE MANEJAR LAS EXCEPCIONES.
+        File currDir = new File(".");
+        String path = currDir.getAbsolutePath();
+        String fileLocation = path.substring(0, path.length() - 1) + "trajectories.xlsx";
 
-                FileOutputStream outputStream = new FileOutputStream(fileLocation);
-                workbook.write(outputStream);
-                workbook.close();
-                */
+        FileOutputStream outputStream = new FileOutputStream(fileLocation);
+        workbook.write(outputStream);
+        workbook.close();
+        */
 
-                return new ByteArrayInputStream(outputStream.toByteArray());
-                }
-            /* EJEMPLO Q APARECE EN LA DOCUMENTACIÓN PARA ADJUNTAR UN RECIBO. EN ESTE CASO, HABRÍA Q MODIFICARLO PARA ADJUNTAR EXCEL???
-            FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
-            helper.addAttachment("Invoice", file);
-            */
+        return new ByteArrayInputStream(outputStream.toByteArray());
+        }
+        /* EJEMPLO Q APARECE EN LA DOCUMENTACIÓN PARA ADJUNTAR UN RECIBO. EN ESTE CASO, HABRÍA Q MODIFICARLO PARA ADJUNTAR EXCEL???
+        FileSystemResource attachment = new FileSystemResource(new File(pathToAttachment));
+
+        ByteArrayInputStream attachment = excelFile(myStream, "fma/excel")
+        helper.addAttachment("Trajecteries.xlsx", attachment);
+
+        //lo añadimos al correo a enviar
+helper.addAttachment("nombreFichero.pdf", attachment);
+        */
 }
