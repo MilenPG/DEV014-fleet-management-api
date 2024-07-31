@@ -15,6 +15,10 @@ public interface TrajectoryRepository extends JpaRepository<Trajectory, Integer>
     List<Trajectory> findByTaxiIdAndDate(Integer taxi_id, String date, Pageable page);
 
     @Query(nativeQuery = true,
+            value = "select * from trajectories where taxi_id=:taxi_id and TO_CHAR(date,'dd-MM-yyyy')=:date")
+    List<Trajectory> findByTaxiIdAndDateExport(Integer taxi_id, String date);
+
+    @Query(nativeQuery = true,
             value = "SELECT ID, TAXI_ID, date, LONGITUDE, LATITUDE " +
 
                     "FROM (" + "SELECT ID, TAXI_ID, date, LONGITUDE, LATITUDE, " +
