@@ -7,6 +7,7 @@ import api.fleetManagementAPI.services.MailService;
 import api.fleetManagementAPI.models.Trajectory;
 import api.fleetManagementAPI.services.ListLatestTrajectoriesService;
 import api.fleetManagementAPI.services.ListTrajectoryService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,16 +47,10 @@ public class TrajectoryController {
     }
 
     @GetMapping("/export")
-    public ResponseEntity<Object> mailService(@RequestParam Integer taxiId,
+    public ResponseEntity<Object> mailService(@RequestParam Integer taxi_id,
                                               @RequestParam String date,
-                                              @RequestParam String email,
-                                              @RequestParam(required = false, defaultValue="0") Integer page,
-                                              @RequestParam(required = false, defaultValue="10") Integer limit) throws IOException {
-        ResponseEntity<Object> exportTrajectories =
-                mailService.sendMessageTo(email,
-                        "Prueba mail FMA",
-                        "Hola, esto es un mail de prueba enviado automáticamente al hacer una petición a FMA",
-                        taxiId, date, page, limit);
-        return exportTrajectories;
+                                              @RequestParam String email) throws MessagingException, IOException {
+        //ResponseEntity<Object> exportTrajectories =
+        return mailService.sendMessageTo(email, taxi_id, date); //exportTrajectories;
     }
 }
