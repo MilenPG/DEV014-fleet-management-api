@@ -1,8 +1,4 @@
 package api.fleetManagementAPI.controllers;
-
-
-//AQUÍ DESARROLLAREMOS LOS 2 ENDPOINTS REQUERIDOS
-
 import api.fleetManagementAPI.services.MailService;
 import api.fleetManagementAPI.models.Trajectory;
 import api.fleetManagementAPI.services.ListLatestTrajectoriesService;
@@ -21,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/trajectories")
 public class TrajectoryController {
-    @Autowired // aquí debemos instanciar todos los servicios a los q debemos conectar para ejecutar las peticiones a construir.
+    @Autowired
     private ListTrajectoryService listTrajectoryService;
     @Autowired
     private ListLatestTrajectoriesService listLatestTrajectoriesService;
@@ -49,8 +45,9 @@ public class TrajectoryController {
     @GetMapping("/export")
     public ResponseEntity<Object> mailService(@RequestParam Integer taxi_id,
                                               @RequestParam String date,
-                                              @RequestParam String email) throws MessagingException, IOException {
-        //ResponseEntity<Object> exportTrajectories =
-        return mailService.sendMessageTo(email, taxi_id, date); //exportTrajectories;
+                                              @RequestParam String email) throws MessagingException, IOException
+    {
+        return mailService
+                .sendMessageTo(email, taxi_id, date);
     }
 }

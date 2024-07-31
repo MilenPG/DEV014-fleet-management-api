@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/taxis") // Base para que todas las URI de este conjunto de endpoints empiecen con el mismo prefijo.
 public class TaxiController {
-    @Autowired // lo usamos para instanciar la clase y conectar las capas
+    @Autowired // lo usamos para instanciar la clase y conectar las capas, en vez de hacerlo mediante el constructor.
     private ListTaxiService listTaxiService;
 
     @GetMapping()
